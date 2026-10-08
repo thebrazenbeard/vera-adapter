@@ -1,0 +1,21 @@
+{
+  "schema": "VERA_ADAPTER_LOCAL_ENGINE_TARGETS_V1",
+  "engines": [
+    {
+      "engine_id": "ollama-native-example",
+      "implementation_id": "OLLAMA_DECLARED_NOT_INDEPENDENTLY_VERIFIED",
+      "provider": "local",
+      "model": "qwen3:4b-instruct",
+      "protocol": "ollama_chat",
+      "base_url": "http://127.0.0.1:11434"
+    },
+    {
+      "engine_id": "openai-compatible-example",
+      "implementation_id": "SECOND_RUNTIME_DECLARED_NOT_VERIFIED",
+      "provider": "local",
+      "model": "local-model-name",
+      "protocol": "openai_chat",
+      "base_url": "http://127.0.0.1:5001"
+    }
+  ]
+}

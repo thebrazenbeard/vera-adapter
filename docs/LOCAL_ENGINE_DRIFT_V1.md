@@ -43,3 +43,35 @@ Canonical conversation items are currently untyped strings. The wire
 driver treats all of them as user messages, never inferring assistant
 roles from text. A typed conversation/role contract is a follow-up
 design subject, not something to silently invent in transport.
+
+
+## Cross-protocol targets (two individually configured endpoints)
+
+The `--engines-file` mode uses a strict `VERA_ADAPTER_LOCAL_ENGINE_TARGETS_V1`
+JSON file (see `examples/local-engine-targets.example.json`). Each of the
+2-8 targets declares its own `engine_id`, `implementation_id`, `provider`,
+`model`, `protocol` and `base_url`. Only numeric loopback HTTP hosts are
+accepted; unsupported protocols, extra fields, duplicate IDs and invalid
+target values fail before dispatch. The runner freezes a SHA-256 digest of
+the manifest's exact input bytes in the output receipt.
+
+```powershell
+python -B -m tools.run_local_drift `
+  --engines-file examples/local-engine-targets.example.json `
+  --prompt 'What does this evidence prove?' `
+  --source-revision <exact-40-hex-Vera-Mono-commit> `
+  --source-path packages/vera_identity/src/vera_identity/resources/architecture/identity/VERA_PROJECT_IDENTITY_V1.json `
+  --output D:\VERA\portal-task-state\two-engines-unrescued.json
+```
+
+The example's second endpoint is illustrative; its service and model
+are NOT known to be installed or running. Live probes are opt-in and
+require two reachable authorized endpoints. The manifest merely declares
+implementation identity; it is not evidence of distinct underlying
+executables, runtime processes, versions, model artifacts, or engines.
+Every produced receipt says `engine_diversity_verification=NOT_ESTABLISHED`,
+regardless of the strings in `implementation_id`. Independent runtime
+identity requires separate host-side process/executable/version/artifact
+readback and independent evaluation bound to the frozen input.
+`source_revision` and `SourceRef` are declared attribution, not live
+repository verification. There is no rescue feedback between trials.

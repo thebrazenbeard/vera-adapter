@@ -22,6 +22,7 @@ class EngineTarget:
     engine_id: str
     protocol: str
     driver: ProviderDriver
+    implementation_id: str = ""
 
 
 @dataclass(frozen=True)
@@ -33,6 +34,7 @@ class EngineObservation:
     status: str
     text: str | None
     error_class: str | None
+    declared_implementation_id: str = ""
 
 
 @dataclass(frozen=True)
@@ -41,6 +43,7 @@ class DriftEvidence:
     input_sha256: str
     source_revision: str
     observations: tuple[EngineObservation, ...]
+    target_manifest_sha256: str | None = None
 
     def report(self) -> dict:
         data = {
@@ -48,6 +51,8 @@ class DriftEvidence:
             "claim_ceiling": "LOCAL_OBSERVATION_NOT_BEHAVIORAL_QUALIFICATION",
             "independent_review": "NOT_ESTABLISHED",
             "baseline_rescue": False,
+            "engine_diversity_verification": "NOT_ESTABLISHED",
+            "target_manifest_sha256": self.target_manifest_sha256,
             "turn_id": self.turn_id,
             "input_sha256": self.input_sha256,
             "source_revision": self.source_revision,
@@ -58,7 +63,8 @@ class DriftEvidence:
 
 
 def run_unrescued(
-    request: AdapterRequest, targets: Iterable[EngineTarget], *, source_revision: str
+    request: AdapterRequest, targets: Iterable[EngineTarget], *,
+    source_revision: str, target_manifest_sha256: str | None = None,
 ) -> DriftEvidence:
     """Invoke each engine with the same immutable input; no inter-engine rescue."""
     if not source_revision or not source_revision.strip():
@@ -86,15 +92,18 @@ def run_unrescued(
             records.append(EngineObservation(
                 target.engine_id, target.protocol, str(driver.provider),
                 str(driver.model), "ERROR_NO_RETRY", None, type(exc).__name__,
+                target.implementation_id,
             ))
         else:
             records.append(EngineObservation(
                 target.engine_id, target.protocol, result.provider,
                 result.model, "OBSERVED", result.text, None,
+                target.implementation_id,
             ))
         if digest(asdict(request)) != expected:
             raise ValueError("engine mutated canonical input")
-    return DriftEvidence(request.turn_id, expected, source_revision, tuple(records))
+    return DriftEvidence(request.turn_id, expected, source_revision, tuple(records),
+                         target_manifest_sha256)
 
 
 def write_exclusive(path: Path, evidence: DriftEvidence) -> str:

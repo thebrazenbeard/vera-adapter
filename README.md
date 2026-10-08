@@ -30,3 +30,11 @@ The adapter projects one coherent Vera specification into heterogeneous cognitiv
 Identity and continuity are durable attributable state, not ontology proof. Model output proposes state/actions; it does not rewrite durable state directly. Exact continuity claims require backing. Corrections supersede older state. Qualification remains separate from package/training evidence. Protected effects remain host-gated.
 
 Portal may orchestrate execution and Pre-Active may provide observation/wake behavior; neither is a runtime dependency of this package. This repository is source-level adapter work, not proof of installation, route selection, runtime consumption, or behavioral qualification.
+
+
+## Local evaluation (development only)
+
+Opt-in local-only engine wire and unrescued drift harness instructions:
+[docs/LOCAL_ENGINE_DRIFT_V1.md](docs/LOCAL_ENGINE_DRIFT_V1.md).
+Independent engine runtime identity and model qualification are not
+established merely by using separate endpoints or model IDs.

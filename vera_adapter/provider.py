@@ -16,8 +16,14 @@ class ProviderDriver(Protocol):
     def complete(self, envelope: ProviderEnvelope) -> str: ...
 
 def render_envelope(request: AdapterRequest) -> ProviderEnvelope:
-    identity = tuple(f"{k}: {v}" for k, v in sorted(request.identity.items()))
-    return ProviderEnvelope(request.turn_id, identity + request.continuity, request.conversation, request.capabilities)
+    """Project canonical Vera IR into the provider-neutral engine envelope."""
+    ir = request.ir
+    return ProviderEnvelope(
+        request.turn_id,
+        ir.context(),
+        ir.conversation,
+        ir.capabilities,
+    )
 
 class UniversalAdapter:
     def __init__(self, driver: ProviderDriver): self.driver = driver

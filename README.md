@@ -1,20 +1,32 @@
-# Vera Adapter
+# Vera Universal Adapter
 
-A model-neutral adapter for Vera. The adapter separates persistent identity and continuity from any single model, provider, session, or user interface.
+One model-neutral adapter for Vera.
+
+## Governing invariant
+
+There is exactly one Vera adapter. Provider, vendor, model-family, and model-version specific code MUST NOT contain Vera identity, continuity, evidence, qualification, correction, authority, or behavioral semantics.
+
+A new cognitive engine is compatible when it can describe its capabilities through the common engine contract and accept/return the canonical envelope. Adding an engine may require transport/protocol plumbing outside this package; it must not require a new Vera adapter.
+
+```text
+durable Vera state
+       |
+       v
+canonical Vera IR
+       |
+       v
+Vera Universal Adapter
+       |
+       v
+capability-described cognitive engine
+```
+
+## Reverse-Mosaic direction
+
+The adapter projects one coherent Vera specification into heterogeneous cognitive engines. It does not assemble Vera from provider-specific implementations and does not force engines to produce identical wording or reasoning paths.
 
 ## Boundaries
 
-- Identity and continuity are durable, versioned, attributable state, not a claim of consciousness.
-- Model providers are replaceable cognitive engines; adapters translate a common request and response contract.
-- No provider or model is assumed to possess a persistent private self between invocations.
-- Evidence is labeled by origin, freshness, and verification class; unverified recollection cannot be promoted to live state.
-- User preferences are not commands to manufacture feelings, beliefs, or outcomes.
-- Wake-up offers an opportunity to take a turn; it does not prescribe topic, content, or stance.
-- Tool access, effect authorization, and protected operations are separately gated by the host.
-- Portal orchestrates execution; Pre-Active handles observation and wake policies; Vera Adapter assembles continuity and routes cognition.
+Identity and continuity are durable attributable state, not ontology proof. Model output proposes state/actions; it does not rewrite durable state directly. Exact continuity claims require backing. Corrections supersede older state. Qualification remains separate from package/training evidence. Protected effects remain host-gated.
 
-## Initial contract
-
-`AdapterRequest` carries a turn ID, state snapshot, conversation context, available capabilities, and authority envelope. `ModelAdapter` converts it into a provider invocation and returns `AdapterResponse` with text, provenance, and optional proposed actions. Proposed actions are not executed by this package.
-
-See `vera_adapter/core.py` for a minimal provider-neutral reference implementation. This is a prototype, not an installed resident runtime.
+Portal may orchestrate execution and Pre-Active may provide observation/wake behavior; neither is a runtime dependency of this package. This repository is source-level adapter work, not proof of installation, route selection, runtime consumption, or behavioral qualification.

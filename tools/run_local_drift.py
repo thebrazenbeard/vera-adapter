@@ -28,6 +28,12 @@ def main() -> int:
         parser.error("specify at least two different local model IDs")
     if re.fullmatch(r"[0-9a-fA-F]{40}", args.source_revision) is None:
         parser.error("source revision must be an exact 40-character commit SHA")
+    # This is an advisory preflight; os.link below remains the atomic gate
+    # against a concurrent writer between checking and publishing.
+    if args.output.exists() or args.output.is_symlink():
+        parser.error("output already exists; no new engine dispatch allowed")
+    if not args.output.parent.is_dir():
+        parser.error("output parent directory does not exist")
     source = SourceRef("thebrazenbeard/vera-mono", args.source_revision, args.source_path)
     ir = VeraIR(
         IdentityCapsule({"name": "Vera"}, ("truth over fabrication",), sources=(source,)),

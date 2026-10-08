@@ -81,6 +81,20 @@ class DriftTests(unittest.TestCase):
             )
         self.assertEqual(len(a.inputs), 0)
 
+    def test_failed_atomic_publish_leaves_no_final_or_partial_evidence(self):
+        from unittest.mock import patch
+        evidence = run_unrescued(
+            request(), [EngineTarget("one", "stub", Stub("a", "b"))],
+            source_revision="f" * 40,
+        )
+        with TemporaryDirectory() as directory:
+            final = Path(directory) / "receipt.json"
+            with patch("vera_adapter.drift.os.link", side_effect=OSError("fault")):
+                with self.assertRaises(OSError):
+                    write_exclusive(final, evidence)
+            self.assertFalse(final.exists())
+            self.assertEqual(list(Path(directory).iterdir()), [])
+
     def test_receipt_self_hash_and_exclusive_persistence(self):
         evidence = run_unrescued(
             request(), [EngineTarget("one", "stub", Stub("a", "b"))],

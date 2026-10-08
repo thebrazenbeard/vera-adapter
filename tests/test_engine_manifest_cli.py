@@ -144,10 +144,11 @@ class EngineManifestTests(unittest.TestCase):
             self.assertEqual(len(servers[0].received), 1)
             self.assertEqual(len(servers[1].received), 1)
             with patch.object(sys, "argv", arguments):
-                with self.assertRaises(FileExistsError):
+                with self.assertRaises(SystemExit) as stopped:
                     main()
-            self.assertEqual(len(servers[0].received), 2)
-            self.assertEqual(len(servers[1].received), 2)
+            self.assertEqual(stopped.exception.code, 2)
+            self.assertEqual(len(servers[0].received), 1)
+            self.assertEqual(len(servers[1].received), 1)
         finally:
             for server in servers:
                 server.shutdown()

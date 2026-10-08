@@ -75,3 +75,23 @@ identity requires separate host-side process/executable/version/artifact
 readback and independent evaluation bound to the frozen input.
 `source_revision` and `SourceRef` are declared attribution, not live
 repository verification. There is no rescue feedback between trials.
+
+
+## Receipt publication durability
+
+The writer now flushes and fsyncs a same-directory temporary file, then
+uses exclusive hard-link creation to publish a complete receipt without
+replacing existing evidence. The temporary link is removed afterward.
+On filesystems without atomic hard-link support it fails closed rather
+than performing a non-atomic fallback. The published file is read back.
+Its SHA-256 is an integrity checksum for accidental/unsanctioned changes,
+**not** a signature or independent authentication of runtime observations.
+
+
+## No-repeat preflight
+
+If the requested output receipt path already exists, the CLI refuses the
+invocation **before contacting any engine**. It also requires an existing
+output parent directory. A concurrent writer is still guarded atomically
+at hard-link publication; simultaneous runs are not a substitute for a
+host-level lease controlling expensive engine calls.

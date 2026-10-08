@@ -3,7 +3,9 @@ from __future__ import annotations
 from dataclasses import asdict, dataclass
 import hashlib
 import json
+import os
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from typing import Iterable
 from .core import AdapterRequest
 from .provider import ProviderDriver, UniversalAdapter
@@ -107,8 +109,30 @@ def run_unrescued(
 
 
 def write_exclusive(path: Path, evidence: DriftEvidence) -> str:
-    """Persist once; never overwrite a frozen observation."""
+    """Fsync temporary receipt, then atomically publish without replacing.
+
+    A filesystem that cannot create hard links must fail closed.
+    """
+    destination = Path(path)
     report = evidence.report()
-    with Path(path).open("x", encoding="utf-8", newline="\n") as stream:
-        stream.write(json.dumps(report, indent=2, sort_keys=True) + "\n")
+    content = (json.dumps(report, indent=2, sort_keys=True) + "\n").encode("utf-8")
+    with NamedTemporaryFile(
+        mode="wb", prefix="." + destination.name + ".",
+        suffix=".pending", dir=destination.parent, delete=False,
+    ) as stream:
+        temporary = Path(stream.name)
+        try:
+            stream.write(content)
+            stream.flush()
+            os.fsync(stream.fileno())
+        except BaseException:
+            stream.close()
+            temporary.unlink(missing_ok=True)
+            raise
+    try:
+        os.link(temporary, destination)
+        if destination.read_bytes() != content:
+            raise OSError("receipt post-write readback mismatch")
+    finally:
+        temporary.unlink(missing_ok=True)
     return report["receipt_sha256"]

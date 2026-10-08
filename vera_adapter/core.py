@@ -1,15 +1,15 @@
 """Model-neutral Vera invocation contracts. No tool effects are executed here."""
-from dataclasses import dataclass, field
-from typing import Protocol, Mapping
+from dataclasses import dataclass
+from typing import Protocol, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .ir import VeraIR
 
 @dataclass(frozen=True)
 class AdapterRequest:
+    """One authoritative adapter ingress: a turn identifier plus canonical Vera IR."""
     turn_id: str
-    identity: Mapping[str, str]
-    continuity: tuple[str, ...]
-    conversation: tuple[str, ...]
-    capabilities: tuple[str, ...] = ()
-    authority: tuple[str, ...] = ()
+    ir: "VeraIR"
 
 @dataclass(frozen=True)
 class AdapterResponse:

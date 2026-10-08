@@ -95,3 +95,41 @@ invocation **before contacting any engine**. It also requires an existing
 output parent directory. A concurrent writer is still guarded atomically
 at hard-link publication; simultaneous runs are not a substitute for a
 host-level lease controlling expensive engine calls.
+
+
+## Persistent attempt claim before inference
+
+The CLI creates `<output>.attempt.json` using exclusive file creation,
+flushes and fsyncs the claim, and independently reads its bytes back
+**before** contacting a model. The claim binds the exact canonical input
+digest, source revision, declared targets, manifest digest and intended
+output path. The output receipt separately binds the claim checksum.
+This prevents two instances from dispatching through the same output
+namespace when racing on Lappy.
+
+If a process stops after claiming but before writing the output, the
+claim remains. Do not delete it automatically or retry under that same
+path: the engine may have been called despite missing evidence. Manually
+reconcile the attempt and select a fresh run identity if needed.
+`CLAIMED_BEFORE_DISPATCH` is not evidence that an engine actually ran.
+This claim is a one-attempt local concurrency guard, **not** a general
+lease manager or a protected-effect authorization primitive.
+
+## Read-only custody verification
+
+After an opt-in local run, verify the claim/result pair without contacting
+any engine:
+
+```powershell
+python -B -m tools.verify_drift_evidence --output D:\VERA\portal-task-state\two-engines-unrescued.json
+```
+
+The verifier checks both canonical self-hashes, bound source revision, turn
+and input digests, manifest digest, declared target order/IDs and protocol
+metadata, result status, and the exact attempt-claim linkage. An
+interrupted or incomplete attempt is HOLD, never a silent retry.
+
+**PASS_INTERNAL_CUSTODY_ONLY** is an internal integrity/consistency finding:
+the unkeyed SHA-256 receipts are not cryptographic signer authentication,
+live engine-identity attestation, semantic fidelity, independent review,
+or proof that either engine is behaviorally qualified.

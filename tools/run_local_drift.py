@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 from vera_adapter.core import AdapterRequest
 from vera_adapter.drift import EngineTarget, run_unrescued, write_exclusive
+from vera_adapter.attempt import claim_attempt
 from vera_adapter.engine_manifest import load_engine_manifest
 from vera_adapter.identity import IdentityCapsule, SourceRef
 from vera_adapter.ir import VeraIR
@@ -67,9 +68,14 @@ def main() -> int:
             )
             for index, model in enumerate(args.model, start=1)
         ]
+    claim_sha = claim_attempt(
+        args.output, request, tuple(targets), source_revision=args.source_revision,
+        target_manifest_sha256=manifest_sha,
+    )
     evidence = run_unrescued(
         request, targets, source_revision=args.source_revision,
         target_manifest_sha256=manifest_sha,
+        attempt_claim_sha256=claim_sha,
     )
     receipt = write_exclusive(args.output, evidence)
     print("Local observations recorded; independent engine runtimes NOT established")

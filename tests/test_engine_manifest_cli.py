@@ -86,6 +86,36 @@ class EngineManifestTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             load_engine_manifest(self.path)
 
+    def test_orphan_claim_blocks_engine_calls_without_result(self):
+        server = HTTPServer(("127.0.0.1", 0), _Handler)
+        server.received = []
+        thread = Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            body = self.payload()
+            body["engines"][0]["base_url"] = (
+                "http://127.0.0.1:" + str(server.server_port)
+            )
+            body["engines"][1]["base_url"] = (
+                "http://127.0.0.1:" + str(server.server_port)
+            )
+            self.write(body)
+            output = Path(self.tmp.name) / "held.json"
+            orphan = Path(str(output) + ".attempt.json")
+            orphan.write_bytes(b'{"partial":')
+            args = ["run_local_drift", "--engines-file", str(self.path),
+                    "--prompt", "Question", "--source-revision", "f" * 40,
+                    "--source-path", "identity.json", "--output", str(output)]
+            with patch.object(sys, "argv", args), self.assertRaises(FileExistsError):
+                main()
+            self.assertFalse(server.received)
+            self.assertFalse(output.exists())
+            self.assertEqual(orphan.read_bytes(), b'{"partial":')
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=2)
+
     def test_invalid_second_endpoint_fails_before_first_engine_dispatch(self):
         server = HTTPServer(("127.0.0.1", 0), _Handler)
         server.received = []
@@ -141,6 +171,11 @@ class EngineManifestTests(unittest.TestCase):
             self.assertEqual(data["engine_diversity_verification"], "NOT_ESTABLISHED")
             self.assertEqual(data["target_manifest_sha256"],
                              hashlib.sha256(self.path.read_bytes()).hexdigest())
+            claim = Path(str(out) + ".attempt.json")
+            self.assertTrue(claim.exists())
+            attempt = json.loads(claim.read_text(encoding="utf-8"))
+            self.assertEqual(data["attempt_claim_sha256"], attempt["claim_sha256"])
+            self.assertEqual(attempt["retry_policy"], "NO_AUTOMATIC_RETRY")
             self.assertEqual(len(servers[0].received), 1)
             self.assertEqual(len(servers[1].received), 1)
             with patch.object(sys, "argv", arguments):

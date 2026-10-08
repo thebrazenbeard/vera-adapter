@@ -46,6 +46,7 @@ class DriftEvidence:
     source_revision: str
     observations: tuple[EngineObservation, ...]
     target_manifest_sha256: str | None = None
+    attempt_claim_sha256: str | None = None
 
     def report(self) -> dict:
         data = {
@@ -55,6 +56,7 @@ class DriftEvidence:
             "baseline_rescue": False,
             "engine_diversity_verification": "NOT_ESTABLISHED",
             "target_manifest_sha256": self.target_manifest_sha256,
+            "attempt_claim_sha256": self.attempt_claim_sha256,
             "turn_id": self.turn_id,
             "input_sha256": self.input_sha256,
             "source_revision": self.source_revision,
@@ -67,6 +69,7 @@ class DriftEvidence:
 def run_unrescued(
     request: AdapterRequest, targets: Iterable[EngineTarget], *,
     source_revision: str, target_manifest_sha256: str | None = None,
+    attempt_claim_sha256: str | None = None,
 ) -> DriftEvidence:
     """Invoke each engine with the same immutable input; no inter-engine rescue."""
     if not source_revision or not source_revision.strip():
@@ -105,7 +108,7 @@ def run_unrescued(
         if digest(asdict(request)) != expected:
             raise ValueError("engine mutated canonical input")
     return DriftEvidence(request.turn_id, expected, source_revision, tuple(records),
-                         target_manifest_sha256)
+                         target_manifest_sha256, attempt_claim_sha256)
 
 
 def write_exclusive(path: Path, evidence: DriftEvidence) -> str:

@@ -23,8 +23,11 @@ class ModelAdapter(Protocol):
     def invoke(self, request: AdapterRequest) -> AdapterResponse: ...
 
 def validate_response(request: AdapterRequest, response: AdapterResponse) -> AdapterResponse:
-    if not request.turn_id or response.turn_id != request.turn_id:
+    if (type(request.turn_id) is not str or not request.turn_id.strip()
+            or type(response.turn_id) is not str
+            or response.turn_id != request.turn_id):
         raise ValueError("turn identity mismatch")
-    if not response.provider or not response.model:
+    if (type(response.provider) is not str or not response.provider.strip()
+            or type(response.model) is not str or not response.model.strip()):
         raise ValueError("missing model provenance")
     return response

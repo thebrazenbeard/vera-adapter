@@ -26,6 +26,21 @@ class ModelProvenanceValidationTests(unittest.TestCase):
                     validate_response(self.request,
                         AdapterResponse("turn-1", "text", provider, model))
 
+    def test_invisible_control_or_oversized_model_identity_claims_rejected(self):
+        deceptive = ("\u200b", "\u200d", "\u2060", "\ufeff", "\u202e",
+                     "\x00", "\x1b", "\ud800", "model" + "x" * 100_000)
+        for value in deceptive:
+            for field in ("provider", "model"):
+                with self.subTest(field=field, sample=repr(value[:12])):
+                    response = AdapterResponse("turn-1", "text", "provider", "model")
+                    response = AdapterResponse(
+                        response.turn_id, response.text,
+                        value if field == "provider" else response.provider,
+                        value if field == "model" else response.model,
+                    )
+                    with self.assertRaisesRegex(ValueError, "provenance"):
+                        validate_response(self.request, response)
+
     def test_untyped_response_cannot_spoof_validated_envelope(self):
         spoof = SimpleNamespace(turn_id="turn-1", text="fabricated",
                                 provider="provider", model="model",
@@ -56,7 +71,8 @@ class ModelProvenanceValidationTests(unittest.TestCase):
     def test_backend_names_remain_unrestricted_model_neutral_strings(self):
         for provider, model in (("KoboldCPP", "Qwen3.5-4B.Q4_K_M.gguf"),
                                 ("Ollama", "qwen3.5:4b"),
-                                ("llama.cpp", "local/my-model")):
+                                ("llama.cpp", "local/my-model"),
+                                ("Local provider", "môdèle-語言/テスト")):
             with self.subTest(provider=provider):
                 response = AdapterResponse("turn-1", "text", provider, model)
                 self.assertIs(validate_response(self.request, response), response)

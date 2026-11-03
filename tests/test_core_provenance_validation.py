@@ -62,8 +62,10 @@ class ModelProvenanceValidationTests(unittest.TestCase):
         self.assertIs(validate_response(self.request, response), response)
 
     def test_blank_or_untyped_turn_identity_rejected(self):
-        for turn_id in (" ", "\t", 1, True):
-            with self.subTest(turn_id=repr(turn_id)):
+        for turn_id in (" ", "\t", 1, True, "\u200b", "\u202e", "\x00",
+                        "\x1b", "\ud800", "t" * 100_000):
+            sample = repr(turn_id[:12]) if type(turn_id) is str else repr(turn_id)
+            with self.subTest(turn_id=sample):
                 with self.assertRaisesRegex(ValueError, "turn identity"):
                     validate_response(AdapterRequest(turn_id, {}, (), ()),
                         AdapterResponse(turn_id, "text", "provider", "model"))

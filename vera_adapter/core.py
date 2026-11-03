@@ -34,8 +34,14 @@ def validate_response(request: AdapterRequest, response: AdapterResponse) -> Ada
             or type(response.turn_id) is not str
             or response.turn_id != request.turn_id):
         raise ValueError("turn identity mismatch")
-    if (type(response.provider) is not str or not response.provider.strip()
-            or type(response.model) is not str or not response.model.strip()):
+    def visible_provenance(value: object) -> bool:
+        # Labels are opaque and provider-neutral, but must be bounded and
+        # visibly printable. Unicode control/format characters can make
+        # attacker-supplied provenance appear empty or visually misleading.
+        return (type(value) is str and 1 <= len(value) <= 1024
+                and bool(value.strip()) and value.isprintable())
+
+    if not visible_provenance(response.provider) or not visible_provenance(response.model):
         raise ValueError("missing model provenance")
     if (type(response.text) is not str
             or type(response.proposed_actions) is not tuple

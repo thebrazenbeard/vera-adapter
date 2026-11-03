@@ -23,8 +23,23 @@ class ModelAdapter(Protocol):
     def invoke(self, request: AdapterRequest) -> AdapterResponse: ...
 
 def validate_response(request: AdapterRequest, response: AdapterResponse) -> AdapterResponse:
-    if not request.turn_id or response.turn_id != request.turn_id:
+    """Validate envelope shape, not live provider identity or effect authority.
+
+    The model/provider strings are provenance *claims*. A host-owned adapter
+    must separately verify installation, registration, execution and receipts.
+    """
+    if type(request) is not AdapterRequest or type(response) is not AdapterResponse:
+        raise TypeError("exact AdapterRequest and AdapterResponse required")
+    if (type(request.turn_id) is not str or not request.turn_id.strip()
+            or type(response.turn_id) is not str
+            or response.turn_id != request.turn_id):
         raise ValueError("turn identity mismatch")
-    if not response.provider or not response.model:
+    if (type(response.provider) is not str or not response.provider.strip()
+            or type(response.model) is not str or not response.model.strip()):
         raise ValueError("missing model provenance")
+    if (type(response.text) is not str
+            or type(response.proposed_actions) is not tuple
+            or any(type(action) is not str or not action.strip()
+                   for action in response.proposed_actions)):
+        raise ValueError("invalid response envelope")
     return response

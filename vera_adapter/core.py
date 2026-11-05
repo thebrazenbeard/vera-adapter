@@ -33,6 +33,12 @@ class AdapterRequest:
                for key, value in snapshot.items()):
             raise ValueError("identity requires string keys and values")
         object.__setattr__(self, "identity", _FrozenIdentity(snapshot))
+        # A frozen dataclass does not freeze nested caller-owned lists. These
+        # model/authority vectors must be canonical immutable string tuples.
+        for field in ("continuity", "conversation", "capabilities", "authority"):
+            values = getattr(self, field)
+            if type(values) is not tuple or any(type(value) is not str for value in values):
+                raise TypeError(f"AdapterRequest.{field} requires string tuple")
 
 @dataclass(frozen=True)
 class AdapterResponse:

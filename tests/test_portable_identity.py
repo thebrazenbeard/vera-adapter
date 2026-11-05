@@ -11,8 +11,8 @@ class PortableIdentityTests(unittest.TestCase):
 
     def test_later_fact_supersedes_earlier_fact(self):
         facts = (
-            ContinuityFact("policy", "blue", "a", 1),
-            ContinuityFact("policy", "green", "b", 2),
+            ContinuityFact("policy", "blue", "a", 1, backing_available=True),
+            ContinuityFact("policy", "green", "b", 2, backing_available=True),
         )
         self.assertEqual(resolve_current(facts)["policy"].value, "green")
 

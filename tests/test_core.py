@@ -31,6 +31,20 @@ class ContractTests(unittest.TestCase):
                 mutate(request.identity)
         self.assertEqual(request.identity, {'name': 'Vera'})
 
+    def test_request_vectors_reject_caller_owned_mutable_lists(self):
+        for field in ('continuity', 'conversation', 'capabilities', 'authority'):
+            args = {'continuity': (), 'conversation': (), 'capabilities': (), 'authority': ()}
+            args[field] = ['MUTABLE']
+            with self.subTest(field=field), self.assertRaises((TypeError, ValueError)):
+                AdapterRequest('t1', {'name': 'Vera'}, **args)
+
+    def test_request_vectors_require_canonical_string_tuples(self):
+        for field in ('continuity', 'conversation', 'capabilities', 'authority'):
+            args = {'continuity': (), 'conversation': (), 'capabilities': (), 'authority': ()}
+            args[field] = ('valid', 123)
+            with self.subTest(field=field), self.assertRaises((TypeError, ValueError)):
+                AdapterRequest('t1', {'name': 'Vera'}, **args)
+
     def test_identity_requires_string_keys_and_values(self):
         for bad_identity in ({1: 'Vera'}, {'name': 123}, {'name': True}):
             with self.subTest(identity=bad_identity), self.assertRaises((TypeError, ValueError)):

@@ -27,6 +27,16 @@ The adapter projects one coherent Vera specification into heterogeneous cognitiv
 
 ## Boundaries
 
-Identity and continuity are durable attributable state, not ontology proof. Model output proposes state/actions; it does not rewrite durable state directly. Exact continuity claims require backing. Corrections supersede older state. Qualification remains separate from package/training evidence. Protected effects remain host-gated.
+Identity and continuity are durable attributable state, not ontology proof. Model output proposes state/actions; it does not rewrite durable state directly. Exact continuity claims require backing. Only host-admitted corrections supersede older backed state. Qualification remains separate from package/training evidence. Protected effects remain host-gated.
+
+Provider system context is **fail-closed**: `render_envelope` and `UniversalAdapter`
+require a trusted host-owned `verify_ir` callback which authenticates the complete,
+immutable IR, including identity values, source content and revision, continuity
+backing, subject, scope, and supersession. A `SourceRef` is a citation string, **not**
+a credential, a trusted user statement, or proof that a GitHub artifact was read.
+Without that verifier the adapter refuses the provider request. An arbitrary
+caller-provided `lambda _: True` is not host provenance and must not be installed
+as the verifier. This source-only safeguard is not proof that a suitable runtime
+verifier currently exists or is wired into a deployed service.
 
 Portal may orchestrate execution and Pre-Active may provide observation/wake behavior; neither is a runtime dependency of this package. This repository is source-level adapter work, not proof of installation, route selection, runtime consumption, or behavioral qualification.

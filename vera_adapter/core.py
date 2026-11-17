@@ -1,6 +1,19 @@
 """Model-neutral Vera invocation contracts. No tool effects are executed here."""
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Protocol, Mapping
+
+
+class _FrozenIdentity(dict):
+    """JSON/asdict-compatible identity snapshot; mutators fail closed."""
+
+    def _readonly(self, *args, **kwargs):
+        raise TypeError("identity is immutable")
+
+    __setitem__ = __delitem__ = clear = pop = popitem = setdefault = update = _readonly
+
+    def __ior__(self, other):
+        return self._readonly(other)
+
 
 @dataclass(frozen=True)
 class AdapterRequest:
@@ -10,6 +23,22 @@ class AdapterRequest:
     conversation: tuple[str, ...]
     capabilities: tuple[str, ...] = ()
     authority: tuple[str, ...] = ()
+
+    def __post_init__(self) -> None:
+        """Detach the identity from caller-owned mutable state before routing."""
+        if not isinstance(self.identity, Mapping):
+            raise TypeError("identity must be a mapping")
+        snapshot = dict(self.identity)
+        if any(type(key) is not str or type(value) is not str
+               for key, value in snapshot.items()):
+            raise ValueError("identity requires string keys and values")
+        object.__setattr__(self, "identity", _FrozenIdentity(snapshot))
+        # A frozen dataclass does not freeze nested caller-owned lists. These
+        # model/authority vectors must be canonical immutable string tuples.
+        for field in ("continuity", "conversation", "capabilities", "authority"):
+            values = getattr(self, field)
+            if type(values) is not tuple or any(type(value) is not str for value in values):
+                raise TypeError(f"AdapterRequest.{field} requires string tuple")
 
 @dataclass(frozen=True)
 class AdapterResponse:

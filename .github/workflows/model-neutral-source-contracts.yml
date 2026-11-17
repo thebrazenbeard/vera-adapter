@@ -1,0 +1,59 @@
+name: Model-neutral source contracts
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/model-neutral-source-contracts.yml
+      - scripts/verify_model_neutral_interop.py
+      - tests/test_interop_source_custody.py
+
+permissions:
+  contents: read
+
+jobs:
+  pinned-source-contracts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GIT_TERMINAL_PROMPT: "0"
+    steps:
+      - name: Checkout adapter without persistent credentials
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - name: Verify adapter unit and custody tests
+        run: python3 -B -m unittest discover -s tests -q
+
+      - name: Fetch only pinned public source
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$RUNNER_TEMP/vera-interop-sources"
+          mkdir -p "$root"
+          while read -r repo revision; do
+            git clone --no-checkout --filter=blob:none \
+              "https://github.com/thebrazenbeard/${repo}.git" "$root/$repo"
+            git -C "$root/$repo" checkout --detach "$revision"
+            test "$(git -C "$root/$repo" rev-parse HEAD)" = "$revision"
+            test -z "$(git -C "$root/$repo" status --porcelain)"
+          done <<'PINNED_HEADS'
+          conations 73295039e7a1710c5bb73666e665cef80c40aa5d
+          empathy 5b17eeae50cc91cc48a4dbfea169d3e2b7eec331
+          pleasure db3d05da63b18193633a607b870e9942700602ff
+          meso-crct 86c15a633daafd27cb4c3273e228f786dd54dc41
+          volition f622e564bf257b0ffc0b3c05130b62db1c201d3d
+          PINNED_HEADS
+
+      - name: Verify isolated five-source behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -I -S -B scripts/verify_model_neutral_interop.py \
+            --sources-root "$RUNNER_TEMP/vera-interop-sources" \
+            --conations-head 73295039e7a1710c5bb73666e665cef80c40aa5d \
+            --empathy-head 5b17eeae50cc91cc48a4dbfea169d3e2b7eec331 \
+            --pleasure-head db3d05da63b18193633a607b870e9942700602ff \
+            --meso-crct-head 86c15a633daafd27cb4c3273e228f786dd54dc41 \
+            --volition-head f622e564bf257b0ffc0b3c05130b62db1c201d3d

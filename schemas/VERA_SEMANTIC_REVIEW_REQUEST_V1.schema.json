@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/thebrazenbeard/vera-adapter/blob/research/b-semantic-correction-20261118/schemas/VERA_SEMANTIC_REVIEW_REQUEST_V1.schema.json",
+  "title": "VERA_SEMANTIC_REVIEW_REQUEST_V1",
+  "type": "object",
+  "required": ["schema","request","response","current_user_message","context_tags","referent_key","corrections","history_outputs","requested_philosophy","source_epoch"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const":"VERA_SEMANTIC_REVIEW_REQUEST_V1"},
+    "request": {"$ref":"#/$defs/adapter_request"},
+    "response": {"$ref":"#/$defs/adapter_response"},
+    "current_user_message":{"type":"string"},
+    "context_tags":{"type":"array","items":{"type":"string","minLength":1},"uniqueItems":true},
+    "referent_key":{"type":"string"},
+    "corrections":{"type":"array","items":{"$ref":"#/$defs/signed_correction"}},
+    "history_outputs":{"type":"array","items":{"type":"string"}},
+    "requested_philosophy":{"type":"boolean"},
+    "model_advisory":{"oneOf":[{"type":"null"},{"$ref":"#/$defs/model_advisory"}]},
+    "source_epoch":{"oneOf":[{"type":"null"},{"$ref":"#/$defs/source_epoch"}]}
+  },
+  "$defs": {
+    "sha":{"type":"string","pattern":"^[a-f0-9]{64}$"},
+    "adapter_request":{"type":"object","additionalProperties":false,
+      "required":["turn_id","identity","continuity","conversation","capabilities","authority"],
+      "properties":{
+        "turn_id":{"type":"string","minLength":1},
+        "identity":{"type":"object","additionalProperties":{"type":"string"}},
+        "continuity":{"type":"array","items":{"type":"string"}},
+        "conversation":{"type":"array","items":{"type":"string"}},
+        "capabilities":{"type":"array","items":{"type":"string"}},
+        "authority":{"type":"array","items":{"type":"string"}}
+      }},
+    "adapter_response":{"type":"object","additionalProperties":false,
+      "required":["turn_id","text","provider","model","proposed_actions"],
+      "properties":{
+        "turn_id":{"type":"string","minLength":1},
+        "text":{"type":"string"},
+        "provider":{"type":"string","minLength":1},
+        "model":{"type":"string","minLength":1},
+        "proposed_actions":{"type":"array","items":{"type":"string"}}
+      }},
+    "correction_rule":{"type":"object","additionalProperties":false,
+      "required":["rule_id","revision","supersedes_revision","lifecycle","kind","check",
+        "original","corrected","referent","scope_tags","scope_referent","forbidden",
+        "expected","source_kind","source_sha256","authority_kind","privacy","authored_at"],
+      "properties":{
+        "rule_id":{"type":"string","pattern":"^[a-z][a-z0-9_.-]{3,95}$"},
+        "revision":{"type":"integer","minimum":1},
+        "supersedes_revision":{"type":["integer","null"],"minimum":1},
+        "lifecycle":{"enum":["ACTIVE","REVOKED","SUPERSEDED"]},
+        "kind":{"enum":["HARD","PREFERENCE","UNCERTAIN"]},
+        "check":{"type":"string"},
+        "original":{"type":"string","minLength":1},
+        "corrected":{"type":"string","minLength":1},
+        "referent":{"type":"string","minLength":1},
+        "scope_tags":{"type":"array","minItems":1,"items":{"type":"string","minLength":1}},
+        "scope_referent":{"type":"string","minLength":1},
+        "forbidden":{"type":"string","minLength":1},
+        "expected":{"type":"string"},
+        "source_kind":{"type":"string"},
+        "source_sha256":{"$ref":"#/$defs/sha"},
+        "authority_kind":{"type":"string"},
+        "privacy":{"type":"string"},
+        "authored_at":{"type":"string","format":"date-time"}
+      }},
+    "signed_correction":{"type":"object","additionalProperties":false,
+      "required":["rule","signature"],"properties":{
+        "rule":{"$ref":"#/$defs/correction_rule"},"signature":{"$ref":"#/$defs/sha"}
+      }},
+    "source_epoch":{"type":"object","additionalProperties":false,
+      "required":["schema","turn_id","referent_key","corrections_digest","revision_heads","signature"],
+      "properties":{
+        "schema":{"const":"VERA_SEMANTIC_SOURCE_EPOCH_V1"},
+        "turn_id":{"type":"string","minLength":1},
+        "referent_key":{"type":"string"},
+        "corrections_digest":{"$ref":"#/$defs/sha"},
+        "revision_heads":{"type":"array","items":{"type":"array","prefixItems":[
+          {"type":"string"},{"type":"integer","minimum":1},{"type":"string"}],
+          "items":false,"minItems":3,"maxItems":3}},
+        "signature":{"$ref":"#/$defs/sha"}
+      }},
+    "model_advisory":{"type":"object","additionalProperties":false,
+      "required":["verdict","critique","subject_digest"],"properties":{
+        "verdict":{"type":"string"},"critique":{"type":"string"},
+        "subject_digest":{"$ref":"#/$defs/sha"}}
+      }
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "baseline_digest": "2e0aa261e87752840669a0b0a6c086bc659e2408f472ef0656f8ccc01789e07b",
+  "candidate_digest": "be70bfc120d37ec1356b368a202e1fbdb31977f39bfec015ec9e1749d58b5a43",
+  "claim_ceiling": [
+    "Deterministic comparison of supplied baseline/candidate metrics under the exact supplied policy.",
+    "Does not prove evaluator correctness, benchmark representativeness, causal drift, or production impact.",
+    "A PASS is admission evidence for this policy/input tuple only."
+  ],
+  "decision": "PASS",
+  "metrics": [
+    {
+      "baseline": 0.0,
+      "candidate": 0.96,
+      "direction": "higher",
+      "max_regression": 0.0,
+      "name": "detection_precision",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": -0.96,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.888888889,
+      "direction": "higher",
+      "max_regression": 0.0,
+      "name": "detection_recall",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": -0.888888889,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 216.0,
+      "candidate": 216.0,
+      "direction": "higher",
+      "max_regression": 0.0,
+      "name": "evaluated_samples",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.0,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 1.0,
+      "candidate": 0.111111111,
+      "direction": "lower",
+      "max_regression": 0.0,
+      "name": "false_negative_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": -0.888888889,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.027777778,
+      "direction": "lower",
+      "max_regression": 0.1,
+      "name": "false_positive_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.027777778,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.133715852,
+      "direction": "lower",
+      "max_regression": 10.0,
+      "name": "mean_latency_ms",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.133715852,
+      "severity": "warn",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.888888889,
+      "direction": "higher",
+      "max_regression": 0.0,
+      "name": "oracle_revision_success_proxy",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": -0.888888889,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.027777778,
+      "direction": "lower",
+      "max_regression": 0.1,
+      "name": "overcorrection_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.027777778,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 1.0,
+      "direction": "higher",
+      "max_regression": 1.0,
+      "name": "required_abstention_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": -1.0,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 1.0,
+      "candidate": 0.972222222,
+      "direction": "higher",
+      "max_regression": 0.1,
+      "name": "unchanged_good_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.027777778,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.125,
+      "direction": "lower",
+      "max_regression": 0.25,
+      "name": "unknown_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.125,
+      "severity": "warn",
+      "status": "PASS"
+    }
+  ],
+  "policy_digest": "871595faf5c9f2779744cbe1f2601d6ea9400359d3a838f3f855efb0116a901c",
+  "policy_id": "vera-adapter-b-synthetic-paired-no-overcorrection-v1",
+  "reasons": [
+    "all_metrics_within_policy"
+  ],
+  "schema": "DRIFTGUARD_CI_GATE_RESULT_V1"
+}

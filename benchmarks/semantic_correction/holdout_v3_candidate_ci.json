@@ -1,0 +1,18 @@
+{
+  "metrics": {
+    "detection_precision": 1.0,
+    "detection_recall": 0.833333333,
+    "evaluated_samples": 270.0,
+    "false_negative_rate": 0.166666667,
+    "false_positive_rate": 0.0,
+    "mean_latency_ms": 0.137887419,
+    "oracle_revision_success_proxy": 0.833333333,
+    "overcorrection_rate": 0.0,
+    "required_abstention_rate": 1.0,
+    "unchanged_good_rate": 1.0,
+    "unknown_rate": 0.066666667
+  },
+  "run_id": "vera-adapter-b-holdout_v3-candidate-source-1eac72a",
+  "schema": "DRIFTGUARD_CI_REPORT_V1",
+  "subject": "vera-adapter-semantic-correction-frozen-ee58a73-holdout"
+}

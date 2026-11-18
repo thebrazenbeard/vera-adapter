@@ -1,0 +1,12 @@
+{
+  "benchmark_version": "source-ee58a73",
+  "oracle_rewrite_is_pre_authored_not_model_generated": true,
+  "paired": {
+    "baseline_to_candidate_positive_detection_gain": 65,
+    "candidate_vs_misleading_control_detection_gain": 65,
+    "n_gold_positives": 96,
+    "new_good_answer_false_alarms": 5
+  },
+  "schema": "VERA_SEMANTIC_PAIRED_COMPARISON_V1",
+  "split": "HOLDOUT_V2"
+}

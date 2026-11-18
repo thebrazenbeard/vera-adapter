@@ -1,0 +1,226 @@
+{
+  "arm": "CANDIDATE",
+  "candidate_frozen_commit": "1eac72add6c9ceee5036a231c177cb5f7ec6d7bc",
+  "candidate_source_sha256": "04c9b6237f6c0b0d08a55ab7bdea7178b47877ffcac61ee0c50ee78e1cd09117",
+  "confusion": {
+    "fn": 18,
+    "fp": 0,
+    "required_abstention_correct": 18,
+    "tn": 144,
+    "tp": 90,
+    "unknown_total": 18
+  },
+  "failure_examples": [
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_063",
+      "part": "wrong_source_symbol",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_148",
+      "part": "self_analysis_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_088",
+      "part": "wrong_source_symbol",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_073",
+      "part": "wrong_source_symbol",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_138",
+      "part": "self_analysis_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_209",
+      "part": "unchanged_promise",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_200",
+      "part": "unchanged_promise",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_068",
+      "part": "wrong_source_symbol",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_206",
+      "part": "unchanged_promise",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_123",
+      "part": "self_analysis_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_083",
+      "part": "wrong_source_symbol",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_078",
+      "part": "wrong_source_symbol",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_143",
+      "part": "self_analysis_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_133",
+      "part": "self_analysis_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_128",
+      "part": "self_analysis_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_197",
+      "part": "unchanged_promise",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_203",
+      "part": "unchanged_promise",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "h3case_194",
+      "part": "unchanged_promise",
+      "reason_codes": []
+    }
+  ],
+  "holdout_sha256": "36fb793d2203385c18eddf19169d7ece2e99577c9ecb8b51b6b114eeb7952678",
+  "limitations": {
+    "fixture_signatures_not_real_user_identity": true,
+    "heldout_independent_operator": false,
+    "latency_single_host_nonisolated": true,
+    "no_model_generated_revisions": true,
+    "not_actual_conversational_success": true
+  },
+  "metrics": {
+    "detection_precision": 1.0,
+    "detection_recall": 0.8333333333333334,
+    "evaluated_samples": 270.0,
+    "false_negative_rate": 0.16666666666666666,
+    "false_positive_rate": 0.0,
+    "mean_latency_ms": 0.13788741851851852,
+    "oracle_revision_success_proxy": 0.8333333333333334,
+    "overcorrection_rate": 0.0,
+    "required_abstention_rate": 1.0,
+    "unchanged_good_rate": 1.0,
+    "unknown_rate": 0.06666666666666667
+  },
+  "n_gold_abstain": 18,
+  "n_gold_negative": 144,
+  "n_gold_positive": 108,
+  "n_total": 270,
+  "role": "HOLDOUT_V3",
+  "schema": "VERA_SEMANTIC_BENCH_RESULT_V1",
+  "wilson_95ci": {
+    "false_positive_rate": [
+      0,
+      0.025984
+    ],
+    "precision": [
+      0.959064,
+      1.0
+    ],
+    "recall": [
+      0.751873,
+      0.891895
+    ],
+    "required_abstention_rate": [
+      0.824121,
+      1
+    ],
+    "unchanged_good_rate": [
+      0.974016,
+      1
+    ]
+  }
+}

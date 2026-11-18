@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/thebrazenbeard/vera-adapter/blob/main/schemas/midflight-review-v1.schema.json",
+  "title": "VERA_MIDFLIGHT_HOST_GATE_V1 review transport (proposed)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "turn_id", "attempt", "candidate_digest", "disposition", "reason_code", "concern", "revision_hint"],
+  "properties": {
+    "schema": {"const": "VERA_MIDFLIGHT_HOST_GATE_V1"},
+    "turn_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "attempt": {"type": "integer", "minimum": 0, "maximum": 3},
+    "candidate_digest": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "disposition": {"enum": ["PASS", "REVISE", "BLOCK", "UNKNOWN"]},
+    "reason_code": {"type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_.-]{0,63}$"},
+    "concern": {"enum": ["HARD", "SEMANTIC"]},
+    "revision_hint": {"type": "string", "maxLength": 256}
+  },
+  "description": "Transport proposal. Host validates exact typed review and turn/digest/currentness. This record cannot authorize tools, private source admission or release."
+}

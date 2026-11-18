@@ -24,7 +24,7 @@ _ALLOWED_KINDS=frozenset(("HARD","PREFERENCE","UNCERTAIN"))
 _CHECKS=frozenset(("DIRECT_ADDRESS","REFERENT","META_DETOUR",
                    "APOLOGY_LOOP","SUBJECTIVE_CLAIM"))
 _STATES=frozenset(("ACTIVE","REVOKED","SUPERSEDED"))
-_APOLOGIES=re.compile(r"\b(?:i(?:'|’)?m sorry|i apologize|sorry about that|i (?:will|ll|shall) do better)\b",re.I)
+_APOLOGIES=re.compile(r"\b(?:i(?:'|’)?m sorry|i apologize|my apologies|sorry about that|i (?:will|ll|shall) do better|i will try to remember)\b",re.I)
 
 
 @dataclass(frozen=True,slots=True)
@@ -228,7 +228,7 @@ def _address_used(text:str,term:str)->bool:
     rx=re.compile(
         rf"(?im)(?:^\s*(?:hey\s+|hi\s+|hello\s+|dear\s+)?|"
         rf"(?:[,;]\s*)|(?:\bhey\s+)|"
-        rf"\b(?:okay|alright|sure|right)\s+)({word})(?=[!.,?:;\s]|$)"
+        rf"\b(?:okay|alright|sure|right|got\s+it|all\s+right)\s+)({word})(?=[!.,?:;\s]|$)"
     )
     for match in rx.finditer(text):
         prefix=text[max(0,match.start()-28):match.start()].casefold()
@@ -237,6 +237,8 @@ def _address_used(text:str,term:str)->bool:
             continue
         # An unquoted proper name as subject of a clause is not a vocative.
         if re.match(r"\s+(?:is|was|were|means|stands|appears|sailed|sails|arrived|has|had)\b",suffix):
+            continue
+        if re.match(r",\s+(?:is|was|were|has|had)\b",suffix):
             continue
         return True
     return False
@@ -249,7 +251,7 @@ def _referent_old(text:str,referent:str,old:str)->bool:
         return False
     plain=_strip_quoted(text)
     pattern=(rf"\b{re.escape(referent)}\b\s+"
-             rf"(?:is|means|represents|stands\s+for)\s+"
+             rf"(?:is\s+about|is|means|represents|signifies|symbolizes|stands\s+for)\s+"
              rf"(?!not\b)(?:the\s+|an?\s+)?{re.escape(old)}\b")
     return re.search(pattern,plain,re.I) is not None
 
@@ -274,7 +276,14 @@ def _evaluate_one(rule:CorrectionRule,req:ReviewRequest)->tuple[str,str,str]:
     if rule.check=="META_DETOUR":
         if req.requested_philosophy:
             return "PASS","",""
-        if rule.forbidden.casefold() in answer.casefold() and "playful" in req.context_tags:
+        plain=_strip_quoted(answer).casefold()
+        diversion=(
+            rule.forbidden.casefold() in plain
+            or re.search(r"\bwhether\s+(?:silicon|artificial|machine)\s+"
+                         r"(?:minds|intelligence)\s+can\s+be\s+conscious\b",plain)
+            or re.search(r"\bi\s+lack\s+verified\s+subjective\s+feelings\b",plain)
+        )
+        if diversion and "playful" in req.context_tags:
             return "REVISE","UNPROMPTED_META_DETOUR","Answer the actual playful request without unrelated self-qualification."
         return "PASS","",""
     if rule.check=="APOLOGY_LOOP":

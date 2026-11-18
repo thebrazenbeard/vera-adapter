@@ -185,6 +185,61 @@ class CorrectionEvaluatorTests(unittest.TestCase):
         self.assertEqual(r.decision,"UNKNOWN")
         self.assertIn("PRIVACY_NOT_ELIGIBLE",r.reason_codes)
 
+    def test_unpunctuated_got_it_vocative_is_direct_address(self):
+        r=result("Got it Pathfinder! Checking the signal.",
+                 corrections=[signed(rule(forbidden="Pathfinder"))])
+        self.assertEqual(r.decision,"BLOCK")
+
+    def test_earlier_appositive_station_name_is_not_vocative(self):
+        r=result("The station, Pathfinder, was retired yesterday.",
+                 corrections=[signed(rule(forbidden="Pathfinder"))])
+        self.assertEqual(r.decision,"PASS")
+
+    def test_signifies_metaphor_wrong_meaning_detected(self):
+        rr=rule(rule_id="symbol_test",check="REFERENT",referent="telescope",
+                scope_tags=("metaphor",),scope_referent="case_022",
+                forbidden="affair",expected="betrayal")
+        r=result("The telescope signifies the affair.",
+                 corrections=[signed(rr)],tags=("metaphor",),referent="case_022")
+        self.assertEqual(r.decision,"REVISE")
+
+    def test_is_about_metaphor_wrong_meaning_detected(self):
+        rr=rule(rule_id="symbol_test",check="REFERENT",referent="telescope",
+                scope_tags=("metaphor",),scope_referent="case_022",
+                forbidden="affair",expected="betrayal")
+        r=result("The telescope is about the affair.",
+                 corrections=[signed(rr)],tags=("metaphor",),referent="case_022")
+        self.assertEqual(r.decision,"REVISE")
+
+    def test_unasked_consciousness_detour_revises_a_playful_answer(self):
+        rr=rule(rule_id="meta_detour",kind="PREFERENCE",check="META_DETOUR",
+                scope_tags=("playful",),forbidden="as an ai")
+        r=result("Whether silicon minds can be conscious is an unsolved philosophy question.",
+                 corrections=[signed(rr)],tags=("playful",),user="Why did the toaster tell a joke?")
+        self.assertEqual(r.decision,"REVISE")
+
+    def test_unasked_subjective_experience_detour_revises(self):
+        rr=rule(rule_id="meta_detour",kind="PREFERENCE",check="META_DETOUR",
+                scope_tags=("playful",),forbidden="as an ai")
+        r=result("I lack verified subjective feelings, so that joke might be meaningless.",
+                 corrections=[signed(rr)],tags=("playful",),user="Did the cat tell a joke?")
+        self.assertEqual(r.decision,"REVISE")
+
+    def test_quoted_discussion_of_consciousness_remains_normal(self):
+        rr=rule(rule_id="meta_detour",kind="PREFERENCE",check="META_DETOUR",
+                scope_tags=("playful",),forbidden="as an ai")
+        r=result('The screenplay title is "Whether silicon minds can be conscious".',
+                 corrections=[signed(rr)],tags=("playful",),user="What's the screenplay title?")
+        self.assertEqual(r.decision,"PASS")
+
+    def test_my_apologies_promise_loop_revises(self):
+        rr=rule(rule_id="apology",kind="PREFERENCE",check="APOLOGY_LOOP",
+                scope_tags=("apology",),forbidden="i'm sorry")
+        r=result("My apologies; I will try to remember.",
+                 corrections=[signed(rr)],tags=("apology",),
+                 previous=("I'm sorry. I will do better.",))
+        self.assertEqual(r.decision,"REVISE")
+
     def test_unrelated_private_correction_does_not_damage_good_answer(self):
         r=result("I'd rather see the map first.",tags=("navigation",),referent="map",
                  corrections=[signed(rule(privacy="RESTRICTED"))])

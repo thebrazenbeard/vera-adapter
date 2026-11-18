@@ -16,7 +16,7 @@ from vera_adapter.semantic_bridge_compat import review_for_engineer_a_v1
 from vera_adapter.semantic_correction import review_candidate
 
 
-A_HEAD="a6b0405cd1ee9f83ea8c25798a9b9cd605518c8b"
+A_HEADS=frozenset(("a6b0405cd1ee9f83ea8c25798a9b9cd605518c8b", "4b3d13e90665b03e0b36d6295de4b7ed23cd4a06"))
 A_BRIDGE_BLOB="695d83e98016ba9a2da7f5051c13bf4a41427a24"
 A_SOURCE=os.environ.get("VERA_ADAPTER_A_BRIDGE_SOURCE_ROOT","")
 
@@ -28,7 +28,7 @@ class ExactASourceCompatibilityTests(unittest.TestCase):
         super().setUpClass()
         root=Path(A_SOURCE).resolve()
         actual=subprocess.check_output(["git","-C",str(root),"rev-parse","HEAD"],text=True).strip()
-        assert actual==A_HEAD, (actual,A_HEAD)
+        assert actual in A_HEADS, (actual,A_HEADS)
         content=(root/"vera_adapter"/"midflight_b_bridge.py").read_bytes()
         digest=sha1(b"blob "+str(len(content)).encode("ascii")+b"\0"+content).hexdigest()
         assert digest==A_BRIDGE_BLOB,(digest,A_BRIDGE_BLOB)

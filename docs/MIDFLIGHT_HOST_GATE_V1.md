@@ -67,3 +67,9 @@ Correction research: [Huang et al., ICLR 2024](https://proceedings.iclr.cc/paper
 **Local model:** When an authorized local GGUF service is online, bind the HTTP/SSE stream to a *private-only* proxy with tool routes disabled; run one synthetic forbidden marker and one innocuous PASS behind an exclusively gated client. Verify exact server/version/model hash, abort behavior, client output bytes, request/response logs, and no bypass route. No installation or paid service without Patrick's exact permission.
 
 **ChatGPT-facing advisory:** In a separate reviewed private-plugin version, present `PASS/REVISE/BLOCK/UNKNOWN` as explicitly requested Vera Conscience guidance *before the assistant chooses to answer*, with provenance. Do not call that guaranteed native midflight interception, native plugin replacement or independent older-GPT execution.
+
+## 2026-11-18 source-only ChatGPT text-chat-first extension
+
+Patrick's current priority is an opt-in ordinary ChatGPT text-review plugin experiment before paid-provider or local-model deployment. See MIDFLIGHT_CHAT_ADVISORY_V1.md and the additive ChatAdvisory source/skill package. The original host gate remains a second-stage enforcement candidate. No native app/plugin was installed, changed or invoked by this source update.
+
+Engineer B now has a separate semantic correction draft PR #14 (head 30139e7c5451186e1d10221c58d21ed8d4a3213f), supplying a different ReviewDecision schema. Engineer A's injected EngineerBReviewPort translates that output into the existing exact-turn/digest A ReviewVerdict without copying B policies. A composed synthetic case with exact B source withheld a forbidden direct address and an unqualified source epoch, and delivered one clean response. This remains source-only, not authenticated issuer or model/browser interception.

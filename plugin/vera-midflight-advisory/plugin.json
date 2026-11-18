@@ -1,0 +1,24 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "vera-midflight-advisory",
+  "version": "0.1.0",
+  "description": "Private-safe explicit ChatGPT text review; advisory only, not a guaranteed interception hook.",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "capabilities": [
+          "Interactive"
+        ],
+        "category": "Productivity",
+        "defaultPrompt": [
+          "@Vera Midflight Advisory: review this complete draft against currently qualified corrections.",
+          "Use an actual review-tool receipt to distinguish invoked review from a model's own assertion."
+        ],
+        "developerName": "Vera Adapter Engineering",
+        "displayName": "Vera Midflight Advisory",
+        "longDescription": "An explicit ChatGPT text-chat review workflow. When an authorized external review action is available it may return PASS, REVISE, BLOCK or UNKNOWN. Ordinary ChatGPT tools cannot guarantee invocation, intercept every answer, observe final displayed text, or grant tool authority.",
+        "shortDescription": "Opt-in advisory review; no output interception."
+      }
+    }
+  }
+}

@@ -295,6 +295,23 @@ def plan_preflight(req: PreflightRequest,
         any(type(x) is not str or not x or len(x) > 64 for x in req.context_tags) or
         type(req.records) is not tuple):
         return _decision("BLOCK", reasons=("REQUEST_SHAPE_INVALID",))
+    # Narrow conflict check, not a general speech-act classifier: if the
+    # entire present user turn is a simple stop instruction, a different
+    # caller-supplied act must not select stale identity/preference sources.
+    # Explicit QUOTE/HYPOTHETICAL are excluded to avoid treating mentions
+    # as live refusals. More complex refusals require host qualification.
+    explicit_stop = re.fullmatch(
+        r"\s*(?:please\s+)?stop(?:\s+(?:this|that|the)\s+"
+        r"(?:topic|conversation|discussion|subject)|\s+(?:now|here))?[.!]?\s*",
+        req.user_message,
+        flags=re.IGNORECASE,
+    )
+    if explicit_stop and req.speech_act not in ("TOPIC_SHIFT", "QUOTE", "HYPOTHETICAL"):
+        return _decision(
+            "UNKNOWN",
+            reasons=("CURRENT_TURN_ACT_CONFLICT",),
+            uncertainty="Clear current-turn stop conflicts with supplied speech-act label; host must re-evaluate before source selection.",
+        )
     if len(req.records) > 128:
         return _decision("UNKNOWN", reasons=("SOURCE_SET_TOO_LARGE",),
                          uncertainty="Source list exceeds bounded review capacity.")

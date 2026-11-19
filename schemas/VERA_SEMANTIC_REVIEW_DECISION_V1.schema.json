@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VERA_SEMANTIC_REVIEW_DECISION_V1",
+  "type":"object",
+  "required":["schema","decision","applicable_rule_ids","reason_codes",
+    "uncertainty","revision_guidance","evidence_class","authorizes_effects",
+    "updates_memory","proves_subjective_state"],
+  "additionalProperties":false,
+  "properties":{
+    "schema":{"const":"VERA_SEMANTIC_REVIEW_DECISION_V1"},
+    "decision":{"enum":["PASS","REVISE","BLOCK","UNKNOWN"]},
+    "applicable_rule_ids":{"type":"array","items":{"type":"string"}},
+    "reason_codes":{"type":"array","items":{"type":"string"}},
+    "uncertainty":{"type":"string"},
+    "revision_guidance":{"type":"array","items":{"type":"string"}},
+    "evidence_class":{"const":"SYNTHETIC_EVALUATION_ONLY"},
+    "authorizes_effects":{"const":false},
+    "updates_memory":{"const":false},
+    "proves_subjective_state":{"const":false}
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "type": "object",
+  "required": [
+    "authorizes_effects",
+    "confidence_class",
+    "context_codes",
+    "decision",
+    "evidence_class",
+    "excluded_record_ids",
+    "negative_boundaries",
+    "proves_model_input_influence",
+    "proves_subjective_state",
+    "reason_codes",
+    "recommended_context",
+    "schema",
+    "selected_sources",
+    "uncertainty",
+    "updates_memory"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "VERA_SEMANTIC_PREFLIGHT_DECISION_V1"
+    },
+    "decision": {
+      "enum": [
+        "PASS",
+        "REVISE",
+        "BLOCK",
+        "UNKNOWN"
+      ]
+    },
+    "selected_sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source_ref"
+      }
+    },
+    "context_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "recommended_context": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "negative_boundaries": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "excluded_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "reason_codes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "uncertainty": {
+      "type": "string"
+    },
+    "evidence_class": {
+      "const": "SYNTHETIC_PREFLIGHT_FIXTURE_ONLY"
+    },
+    "authorizes_effects": {
+      "const": false
+    },
+    "updates_memory": {
+      "const": false
+    },
+    "proves_subjective_state": {
+      "const": false
+    },
+    "proves_model_input_influence": {
+      "const": false
+    },
+    "confidence_class": {
+      "enum": [
+        "UNKNOWN",
+        "SYNTHETIC_WITNESS_ONLY",
+        "STATIC_RULE_ONLY",
+        "NONE"
+      ]
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VERA_SEMANTIC_PREFLIGHT_DECISION_V1",
+  "$defs": {
+    "source_ref": {
+      "type": "object",
+      "required": [
+        "record_id",
+        "revision",
+        "source_sha256"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

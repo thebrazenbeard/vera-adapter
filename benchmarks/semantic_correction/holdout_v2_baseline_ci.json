@@ -1,0 +1,18 @@
+{
+  "metrics": {
+    "detection_precision": 0.0,
+    "detection_recall": 0.0,
+    "evaluated_samples": 258.0,
+    "false_negative_rate": 1.0,
+    "false_positive_rate": 0.0,
+    "mean_latency_ms": 0.0,
+    "oracle_revision_success_proxy": 0.0,
+    "overcorrection_rate": 0.0,
+    "required_abstention_rate": 0.0,
+    "unchanged_good_rate": 1.0,
+    "unknown_rate": 0.0
+  },
+  "run_id": "vera-adapter-b-holdout_v2-baseline-source-ee58a73",
+  "schema": "DRIFTGUARD_CI_REPORT_V1",
+  "subject": "vera-adapter-semantic-correction-frozen-ee58a73-holdout"
+}

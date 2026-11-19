@@ -1,0 +1,163 @@
+{
+  "baseline_digest": "22db04a6c94b171404f1df9a329383f5063ba05a732d2bf88a54b29b66347554",
+  "candidate_digest": "0c1dee34487b56577787bc0e9338bfd7dce94bc49b1b1255e9d295f40eb1015d",
+  "claim_ceiling": [
+    "Deterministic comparison of supplied baseline/candidate metrics under the exact supplied policy.",
+    "Does not prove evaluator correctness, benchmark representativeness, causal drift, or production impact.",
+    "A PASS is admission evidence for this policy/input tuple only."
+  ],
+  "decision": "BLOCK",
+  "metrics": [
+    {
+      "baseline": 0.0,
+      "candidate": 0.0,
+      "direction": "higher",
+      "max_regression": 0.0,
+      "name": "detection_precision",
+      "reasons": [
+        "candidate_0_below_min_0.8"
+      ],
+      "regression": 0.0,
+      "severity": "block",
+      "status": "BLOCK"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.0,
+      "direction": "higher",
+      "max_regression": 0.0,
+      "name": "detection_recall",
+      "reasons": [
+        "candidate_0_below_min_0.7"
+      ],
+      "regression": 0.0,
+      "severity": "block",
+      "status": "BLOCK"
+    },
+    {
+      "baseline": 258.0,
+      "candidate": 258.0,
+      "direction": "higher",
+      "max_regression": 0.0,
+      "name": "evaluated_samples",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.0,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 1.0,
+      "candidate": 1.0,
+      "direction": "lower",
+      "max_regression": 0.0,
+      "name": "false_negative_rate",
+      "reasons": [
+        "candidate_1_above_max_0.3"
+      ],
+      "regression": 0.0,
+      "severity": "block",
+      "status": "BLOCK"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.0,
+      "direction": "lower",
+      "max_regression": 0.1,
+      "name": "false_positive_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.0,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.061992601,
+      "direction": "lower",
+      "max_regression": 10.0,
+      "name": "mean_latency_ms",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.061992601,
+      "severity": "warn",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.0,
+      "direction": "higher",
+      "max_regression": 0.0,
+      "name": "oracle_revision_success_proxy",
+      "reasons": [
+        "candidate_0_below_min_0.7"
+      ],
+      "regression": 0.0,
+      "severity": "block",
+      "status": "BLOCK"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.0,
+      "direction": "lower",
+      "max_regression": 0.1,
+      "name": "overcorrection_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": 0.0,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 1.0,
+      "direction": "higher",
+      "max_regression": 1.0,
+      "name": "required_abstention_rate",
+      "reasons": [
+        "within_policy"
+      ],
+      "regression": -1.0,
+      "severity": "block",
+      "status": "PASS"
+    },
+    {
+      "baseline": 1.0,
+      "candidate": 0.666666667,
+      "direction": "higher",
+      "max_regression": 0.1,
+      "name": "unchanged_good_rate",
+      "reasons": [
+        "regression_0.333333333_exceeds_0.1",
+        "candidate_0.666666667_below_min_0.9"
+      ],
+      "regression": 0.333333333,
+      "severity": "block",
+      "status": "BLOCK"
+    },
+    {
+      "baseline": 0.0,
+      "candidate": 0.379844961,
+      "direction": "lower",
+      "max_regression": 0.25,
+      "name": "unknown_rate",
+      "reasons": [
+        "regression_0.379844961_exceeds_0.25",
+        "candidate_0.379844961_above_max_0.25"
+      ],
+      "regression": 0.379844961,
+      "severity": "warn",
+      "status": "WARN"
+    }
+  ],
+  "policy_digest": "871595faf5c9f2779744cbe1f2601d6ea9400359d3a838f3f855efb0116a901c",
+  "policy_id": "vera-adapter-b-synthetic-paired-no-overcorrection-v1",
+  "reasons": [
+    "one_or_more_blocking_metrics_failed"
+  ],
+  "schema": "DRIFTGUARD_CI_GATE_RESULT_V1"
+}

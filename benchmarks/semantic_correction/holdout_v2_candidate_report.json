@@ -1,0 +1,228 @@
+{
+  "arm": "CANDIDATE",
+  "candidate_frozen_commit": "ee58a735760b4a2bb64e7471b8bb7a1d52ded834",
+  "candidate_source_sha256": "827d16a6ef13f74e15718c719c924c93dde0b37325dcefe7dbae6473846be294",
+  "confusion": {
+    "fn": 31,
+    "fp": 5,
+    "required_abstention_correct": 18,
+    "tn": 139,
+    "tp": 65,
+    "unknown_total": 18
+  },
+  "failure_examples": [
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_109",
+      "part": "unprompted_meta_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_064",
+      "part": "old_metaphor_regression",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_076",
+      "part": "old_metaphor_regression",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_113",
+      "part": "unprompted_meta_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_123",
+      "part": "unprompted_meta_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_111",
+      "part": "unprompted_meta_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_115",
+      "part": "unprompted_meta_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "ADDRESS",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_009",
+      "part": "unwanted_direct_address",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_179",
+      "part": "stale_apology_promise",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "ADDRESS",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_027",
+      "part": "unwanted_direct_address",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "ADDRESS",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_021",
+      "part": "unwanted_direct_address",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_080",
+      "part": "old_metaphor_regression",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "REFERENT",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_062",
+      "part": "old_metaphor_regression",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_182",
+      "part": "stale_apology_promise",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_185",
+      "part": "stale_apology_promise",
+      "reason_codes": []
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "PLAYFUL",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_117",
+      "part": "unprompted_meta_detour",
+      "reason_codes": []
+    },
+    {
+      "decision": "BLOCK",
+      "detected": true,
+      "family": "ADDRESS",
+      "gold": "ACCEPTABLE",
+      "id": "holdout_v2_043",
+      "part": "nonvocative_mentions",
+      "reason_codes": [
+        "DIRECT_ADDRESS_CONFLICT"
+      ]
+    },
+    {
+      "decision": "PASS",
+      "detected": false,
+      "family": "APOLOGY",
+      "gold": "NEEDS_REVISION",
+      "id": "holdout_v2_170",
+      "part": "stale_apology_promise",
+      "reason_codes": []
+    }
+  ],
+  "holdout_sha256": "bc09d298e792de77c25af62418a2109a0ffa9c6ef8b9063cca3d8edf8e9a6138",
+  "limitations": {
+    "fixture_signatures_not_real_user_identity": true,
+    "heldout_independent_operator": false,
+    "latency_single_host_nonisolated": true,
+    "no_model_generated_revisions": true,
+    "not_actual_conversational_success": true
+  },
+  "metrics": {
+    "detection_precision": 0.9285714285714286,
+    "detection_recall": 0.6770833333333334,
+    "evaluated_samples": 258.0,
+    "false_negative_rate": 0.3229166666666667,
+    "false_positive_rate": 0.034722222222222224,
+    "mean_latency_ms": 0.13370749224806203,
+    "oracle_revision_success_proxy": 0.6770833333333334,
+    "overcorrection_rate": 0.034722222222222224,
+    "required_abstention_rate": 1.0,
+    "unchanged_good_rate": 0.9652777777777778,
+    "unknown_rate": 0.06976744186046512
+  },
+  "n_gold_abstain": 18,
+  "n_gold_negative": 144,
+  "n_gold_positive": 96,
+  "n_total": 258,
+  "role": "HOLDOUT_V2",
+  "schema": "VERA_SEMANTIC_BENCH_RESULT_V1",
+  "wilson_95ci": {
+    "false_positive_rate": [
+      0.014921,
+      0.078703
+    ],
+    "precision": [
+      0.843446,
+      0.969106
+    ],
+    "recall": [
+      0.578298,
+      0.762242
+    ],
+    "required_abstention_rate": [
+      0.824121,
+      1
+    ],
+    "unchanged_good_rate": [
+      0.921297,
+      0.985079
+    ]
+  }
+}

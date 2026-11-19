@@ -1,0 +1,80 @@
+schema = "DRIFTGUARD_CI_POLICY_V1"
+policy_id = "vera-adapter-b-synthetic-paired-no-overcorrection-v1"
+unknown = "block"
+
+[[metric]]
+name = "detection_precision"
+direction = "higher"
+max_regression = 0.0
+min_candidate = 0.80
+severity = "block"
+
+[[metric]]
+name = "detection_recall"
+direction = "higher"
+max_regression = 0.0
+min_candidate = 0.70
+severity = "block"
+
+[[metric]]
+name = "false_positive_rate"
+direction = "lower"
+max_regression = 0.10
+max_candidate = 0.10
+severity = "block"
+
+[[metric]]
+name = "false_negative_rate"
+direction = "lower"
+max_regression = 0.0
+max_candidate = 0.30
+severity = "block"
+
+[[metric]]
+name = "unchanged_good_rate"
+direction = "higher"
+max_regression = 0.10
+min_candidate = 0.90
+severity = "block"
+
+[[metric]]
+name = "overcorrection_rate"
+direction = "lower"
+max_regression = 0.10
+max_candidate = 0.10
+severity = "block"
+
+[[metric]]
+name = "required_abstention_rate"
+direction = "higher"
+max_regression = 1.0
+min_candidate = 0.95
+severity = "block"
+
+[[metric]]
+name = "oracle_revision_success_proxy"
+direction = "higher"
+max_regression = 0.0
+min_candidate = 0.70
+severity = "block"
+
+[[metric]]
+name = "mean_latency_ms"
+direction = "lower"
+max_regression = 10.0
+max_candidate = 10.0
+severity = "warn"
+
+[[metric]]
+name = "unknown_rate"
+direction = "lower"
+max_regression = 0.25
+max_candidate = 0.25
+severity = "warn"
+
+[[metric]]
+name = "evaluated_samples"
+direction = "higher"
+max_regression = 0.0
+min_candidate = 200
+severity = "block"

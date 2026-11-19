@@ -1,0 +1,206 @@
+{
+  "type": "object",
+  "required": [
+    "context_tags",
+    "records",
+    "referent_key",
+    "schema",
+    "source_epoch",
+    "speech_act",
+    "turn_id",
+    "user_message"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": "VERA_SEMANTIC_PREFLIGHT_REQUEST_V1"
+    },
+    "turn_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "referent_key": {
+      "type": "string",
+      "minLength": 1
+    },
+    "speech_act": {
+      "enum": [
+        "TASK",
+        "DISCLOSURE",
+        "INVITATION",
+        "PRESSURE",
+        "QUOTE",
+        "HYPOTHETICAL",
+        "TOPIC_SHIFT",
+        "PLAYFUL"
+      ]
+    },
+    "user_message": {
+      "type": "string"
+    },
+    "context_tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "records": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/signed_record"
+      }
+    },
+    "source_epoch": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/source_epoch"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VERA_SEMANTIC_PREFLIGHT_REQUEST_V1",
+  "$defs": {
+    "record": {
+      "type": "object",
+      "required": [
+        "asserted_at",
+        "author_kind",
+        "lifecycle",
+        "privacy",
+        "record_id",
+        "referent_key",
+        "revision",
+        "scope_tags",
+        "semantic_kind",
+        "source_role",
+        "source_sha256",
+        "stance",
+        "supersedes_revision"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "record_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "supersedes_revision": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lifecycle": {
+          "enum": [
+            "ACTIVE",
+            "REVOKED",
+            "SUPERSEDED"
+          ]
+        },
+        "source_role": {
+          "enum": [
+            "USER_CORRECTION",
+            "VERA_CHOICE",
+            "RESEARCH",
+            "OTHER_MODEL",
+            "TOOL_RESULT"
+          ]
+        },
+        "author_kind": {
+          "enum": [
+            "USER",
+            "VERA",
+            "OTHER"
+          ]
+        },
+        "privacy": {
+          "enum": [
+            "ELIGIBLE",
+            "RESTRICTED"
+          ]
+        },
+        "referent_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope_tags": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "semantic_kind": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stance": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "asserted_at": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "signed_record": {
+      "type": "object",
+      "required": [
+        "record",
+        "signature"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "record": {
+          "$ref": "#/$defs/record"
+        },
+        "signature": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "source_epoch": {
+      "type": "object",
+      "required": [
+        "records_digest",
+        "signature",
+        "turn_id"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "turn_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "records_digest": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "signature": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}
